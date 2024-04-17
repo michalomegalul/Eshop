@@ -1,0 +1,28 @@
+version: '3.8' 
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432" 
+    environment:
+      POSTGRES_DB: eshop_db 
+      POSTGRES_USER: eshop_user
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+        PGADMIN_DEFAULT_EMAIL: admin@eshop.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres  
+
+volumes:
+  pg_data:
+
