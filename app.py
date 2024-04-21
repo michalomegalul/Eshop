@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, send_from_directory, abort
 import os
 from werkzeug.utils import secure_filename
 import uuid
-from product_manager import create_product, fetch_products, create_category,
+from product_manager import create_product, fetch_products, create_category
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './Images'
@@ -47,7 +47,7 @@ def display_products():
     return render_template('products.html', products=products)
 
 from db_connect import connect_db
-#working on image server
+#working on image
 # @app.route('/upload', methods=['POST'])
 # def upload_image():
 #     file = request.files['image']
@@ -87,5 +87,5 @@ from db_connect import connect_db
 #     except FileNotFoundError:
 #         abort(404)
 
-# if __name__ == '__main__':
-#     app.run(debug=True, host='0.0.0.0', port=5433)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5433)
