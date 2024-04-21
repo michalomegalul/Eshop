@@ -147,3 +147,31 @@ def add_payment_method(user_id, payment_type, provider, account_no, expiry):
         print("Connection to database failed")
         return None
 
+    conn = connect_db()
+    products = []
+    if conn:
+        cur = conn.cursor()
+        try:
+            cur.execute("""
+                SELECT p.id, p.name, p.description, p.price, p.stock_quantity, p.category_id, i.filepath 
+                FROM products p
+                LEFT JOIN images i ON p.id = i.product_id
+                WHERE p.stock_quantity > 0
+            """)
+            product_rows = cur.fetchall()
+            for row in product_rows:
+                products.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'description': row[2],
+                    'price': row[3],
+                    'stock_quantity': row[4],
+                    'category_id': row[5],
+                    'image_url': row[6] or 'default-image.png'  # Provide a default if NULL
+                })
+        except Exception as e:
+            print(f"Error fetching products with images: {e}")
+        finally:
+            cur.close()
+            conn.close()
+    return products
